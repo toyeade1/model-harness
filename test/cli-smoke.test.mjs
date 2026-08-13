@@ -1,5 +1,8 @@
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { mkdtemp, symlink } from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 
@@ -31,4 +34,16 @@ test('unknown commands exit 1 with a concise error', () => {
   assert.equal(result.status, 1);
   assert.match(result.stderr, /unknown command: not-a-real-command/);
   assert.match(result.stderr, /Run mh help/);
+});
+
+test('global symlink invocation resolves project sources', async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), 'mh-global-bin-'));
+  const linkedMh = path.join(dir, 'mh');
+  await symlink(mh, linkedMh);
+
+  const result = spawnSync(linkedMh, ['help'], {
+    encoding: 'utf8'
+  });
+
+  assertShowsHelp(result);
 });
