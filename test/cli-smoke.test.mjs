@@ -11,23 +11,24 @@ function runMh(args) {
   });
 }
 
-function assertShowsPlaceholderHelp(result) {
+function assertShowsHelp(result) {
   assert.equal(result.status, 0, result.stderr);
   assert.equal(result.stderr, '');
   assert.match(result.stdout, /^mh\b/);
-  assert.match(result.stdout, /implementation is in progress/i);
+  assert.match(result.stdout, /mh brain/);
+  assert.match(result.stdout, /mh mcp serve/);
 }
 
-test('help commands print placeholder help and exit 0', () => {
+test('help commands print help and exit 0', () => {
   for (const args of [[], ['help'], ['--help'], ['-h']]) {
-    assertShowsPlaceholderHelp(runMh(args));
+    assertShowsHelp(runMh(args));
   }
 });
 
-test('unimplemented commands exit 1 with scaffold error', () => {
+test('unknown commands exit 1 with a concise error', () => {
   const result = runMh(['not-a-real-command']);
 
   assert.equal(result.status, 1);
-  assert.match(result.stderr, /command not implemented yet: not-a-real-command/);
+  assert.match(result.stderr, /unknown command: not-a-real-command/);
   assert.match(result.stderr, /Run mh help/);
 });

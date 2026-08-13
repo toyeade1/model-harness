@@ -1,0 +1,15 @@
+{
+  "defaultCommand": "brain",
+  "budget": "balanced",
+  "explainRouting": true,
+  "lanes": {
+    "code": "grok_build",
+    "cheap": "deepseek_flash",
+    "review": "codex_review"
+  },
+  "modelOverrides": {
+    "deepseek_flash": {
+      "fallbacks": ["gemini_flash_latest"]
+    }
+  }
+}
