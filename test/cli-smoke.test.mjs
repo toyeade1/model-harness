@@ -19,7 +19,15 @@ function assertShowsPlaceholderHelp(result) {
 }
 
 test('help commands print placeholder help and exit 0', () => {
-  for (const args of [['help'], ['--help'], ['-h']]) {
+  for (const args of [[], ['help'], ['--help'], ['-h']]) {
     assertShowsPlaceholderHelp(runMh(args));
   }
+});
+
+test('unimplemented commands exit 1 with scaffold error', () => {
+  const result = runMh(['not-a-real-command']);
+
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /command not implemented yet: not-a-real-command/);
+  assert.match(result.stderr, /Run mh help/);
 });
