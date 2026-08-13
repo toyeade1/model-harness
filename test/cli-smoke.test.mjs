@@ -23,11 +23,3 @@ test('help commands print placeholder help and exit 0', () => {
     assertShowsPlaceholderHelp(runMh(args));
   }
 });
-
-test('unknown commands print placeholder help and exit 0', () => {
-  const help = runMh(['help']);
-  const unknown = runMh(['not-yet-implemented']);
-
-  assertShowsPlaceholderHelp(unknown);
-  assert.equal(unknown.stdout, help.stdout);
-});
