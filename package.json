@@ -1,0 +1,16 @@
+{
+  "name": "model-harness",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "mh": "./bin/mh"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "zod": "^3.23.8"
+  }
+}
