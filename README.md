@@ -52,13 +52,13 @@ Use `--dry-run` to inspect the selected model command without making a live mode
 
 ## Default Lanes
 
-- `cheap`, `ask`, `deepseek`: DeepSeek V4 Flash through OpenCode/OpenRouter
-- `code`: Grok Build through OpenCode/OpenRouter
+- `cheap`, `ask`, `deepseek`: free DeepSeek V4 Flash through OpenCode
+- `code`: Grok through OpenCode Go
 - `kimi`: Kimi K2.7 Code
 - `deepseek-pro`: DeepSeek V4 Pro
-- `gemini`: Gemini Flash Latest for screenshots, PDFs, and visual work
-- `grok`: Grok Latest
-- `free`: OpenRouter free lane
+- `gemini`: currently routes to Qwen3.7 Plus as the OpenCode Go visual/document fallback
+- `grok`: Grok 4.5
+- `free`: OpenCode free lane
 - `codex`, `hard`: Codex escalation
 - `claude`: Claude planning/review escalation
 - `review`: Codex review

@@ -68,6 +68,29 @@ export function buildCommand(route, options = {}) {
   throw new Error(`Unsupported adapter: ${route.adapter}`);
 }
 
+function extractOpenCodeText(stdout = '') {
+  const texts = [];
+  for (const line of String(stdout).split(/\r?\n/)) {
+    if (!line.trim()) continue;
+    try {
+      const event = JSON.parse(line);
+      if (event.type === 'text' && event.part?.type === 'text' && event.part.text) {
+        texts.push(event.part.text);
+      }
+    } catch {
+      return null;
+    }
+  }
+  return texts.length > 0 ? `${texts.join('\n')}\n` : null;
+}
+
+export function formatCommandOutput(result, route) {
+  if (route.adapter === 'opencode') {
+    return extractOpenCodeText(result.stdout) ?? result.stdout ?? '';
+  }
+  return result.stdout ?? '';
+}
+
 export function runCommand(command, options = {}) {
   const timeoutMs = normalizeTimeoutMs(options.timeoutMs);
   const cwd = options.cwd ?? process.cwd();

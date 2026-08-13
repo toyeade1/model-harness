@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { buildCommand, runCommand } from './adapters.mjs';
+import { buildCommand, formatCommandOutput, runCommand } from './adapters.mjs';
 import { runDoctor } from './doctor.mjs';
 import { renderHelp, renderSetup } from './help.mjs';
 import { serveMcp } from './mcp-server.mjs';
@@ -80,9 +80,9 @@ async function runRoutedCommand(registry, commandName, prompt, options) {
     return;
   }
 
-  printRoute(route, false);
+  process.stderr.write(`mh: ${route.lane} -> ${route.modelId} (${route.adapter})\n`);
   const result = await runCommand(route.command, { cwd: process.cwd() });
-  process.stdout.write(result.stdout ?? '');
+  process.stdout.write(formatCommandOutput(result, route));
   process.stderr.write(result.stderr ?? '');
   process.exitCode = result.ok ? 0 : result.exitCode ?? 1;
 }

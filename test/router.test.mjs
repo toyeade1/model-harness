@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 
-import { buildCommand } from '../src/adapters.mjs';
+import { buildCommand, formatCommandOutput } from '../src/adapters.mjs';
 import { loadRegistry } from '../src/registry.mjs';
 import { createDelegateResult, routeTask } from '../src/router.mjs';
 
@@ -29,7 +29,7 @@ test('builds read-only and human command variants', async () => {
     'opencode',
     'run',
     '--model',
-    'openrouter/deepseek/deepseek-v4-flash-0731',
+    'opencode/deepseek-v4-flash-free',
     '--agent',
     'explore',
     '--dir',
@@ -42,12 +42,12 @@ test('builds read-only and human command variants', async () => {
     'opencode',
     'run',
     '--model',
-    'openrouter/deepseek/deepseek-v4-flash-0731'
+    'opencode/deepseek-v4-flash-free'
   ]);
   assert.deepEqual(buildCommand(openCodeRoute, { cwd, surface: 'cli' }), [
     'opencode',
     '--model',
-    'openrouter/deepseek/deepseek-v4-flash-0731',
+    'opencode/deepseek-v4-flash-free',
     cwd
   ]);
 
@@ -93,3 +93,19 @@ test('MCP delegation refuses writes and recursive escalation by default', async 
   assert.match(recursiveResult.error, /recursive escalation/i);
 });
 
+test('formats opencode JSON event output as readable text', () => {
+  const route = {
+    adapter: 'opencode'
+  };
+  const output = [
+    JSON.stringify({ type: 'step_start' }),
+    JSON.stringify({ type: 'text', part: { type: 'text', text: 'Kimi is stronger for long coding tasks.' } }),
+    JSON.stringify({ type: 'text', part: { type: 'text', text: 'DeepSeek is cheaper for routine work.' } }),
+    JSON.stringify({ type: 'step_finish' })
+  ].join('\n');
+
+  assert.equal(
+    formatCommandOutput({ stdout: output, stderr: '' }, route),
+    'Kimi is stronger for long coding tasks.\nDeepSeek is cheaper for routine work.\n'
+  );
+});

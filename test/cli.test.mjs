@@ -46,7 +46,7 @@ test('JSON commands expose registry and deterministic routes', () => {
 test('lane aliases support dry-run without live model calls', () => {
   const deepseek = jsonFrom(['deepseek-pro', '--dry-run', '--json', 'hard bug']);
   assert.equal(deepseek.modelId, 'deepseek_pro');
-  assert.ok(deepseek.command.includes('openrouter/deepseek/deepseek-v4-pro'));
+  assert.ok(deepseek.command.includes('opencode-go/deepseek-v4-pro'));
 
   const review = jsonFrom(['review', '--dry-run', '--json', 'review uncommitted']);
   assert.equal(review.modelId, 'codex_review');
@@ -54,6 +54,5 @@ test('lane aliases support dry-run without live model calls', () => {
 
   const kimi = jsonFrom(['kimi', '--dry-run', '--json', 'implement parser']);
   assert.equal(kimi.modelId, 'kimi_k27_code');
-  assert.ok(kimi.command.includes('openrouter/moonshotai/kimi-k2.7-code'));
+  assert.ok(kimi.command.includes('opencode-go/kimi-k2.7-code'));
 });
-
